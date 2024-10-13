@@ -1,0 +1,23 @@
+FROM node:18.17.0
+
+ENV PATH="./node_modules/.bin:$PATH"
+
+# Create and navigate to working directory
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+WORKDIR /home/node/app
+USER node
+COPY --chown=node:node . .
+RUN yarn install
+RUN yarn run build
+
+
+FROM nginx
+# Copy app files
+COPY --from=0 ./home/node/app/dist /usr/share/nginx/html
+
+# Copy Nginx config
+COPY --from=0 ./home/node/app/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 3000
+
+ENV PORT 3000

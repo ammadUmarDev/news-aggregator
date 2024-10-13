@@ -1,0 +1,11 @@
+.yarn
+.next
+.eslintrc.json
+.prettierrc
+next-env.d.ts
+package.json
+README.md
+tsconfig.json
+dist
+node_modules
+coverage
